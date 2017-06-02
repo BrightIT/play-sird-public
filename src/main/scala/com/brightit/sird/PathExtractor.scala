@@ -24,10 +24,7 @@ import scala.util.matching.Regex
  * @param partDescriptors Descriptors saying whether each part should be decoded or not.
  */
 class PathExtractor(regex: Regex, partDescriptors: Seq[PathPart.Value]) {
-  def unapplySeq(path: String): Option[List[String]] = extract(path)
-  def unapplySeq(request: RequestData): Option[List[String]] = extract(request.uriPath)
-  def unapplySeq(url: URL): Option[List[String]] = Option(url.getPath).flatMap(extract)
-  def unapplySeq(uri: URI): Option[List[String]] = Option(uri.getRawPath).flatMap(extract)
+  def unapplySeq[T](t: T)(implicit sc: IsSirdPathCompatible[T]): Option[List[String]] = extract(sc.path(t))
 
   private def extract(path: String): Option[List[String]] = {
     regex.unapplySeq(path).map { parts =>

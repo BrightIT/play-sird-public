@@ -124,6 +124,14 @@ package object sird extends RequestMethodExtractors with StringExtractors {
    * Holds data necessary for routing.
    */
   case class RequestData(method: String, uriPath: String, queryString: QueryString)
+  object RequestData {
+    implicit val RequestDataIsSirdCompatible: IsSirdCompatible[RequestData] =
+      new IsSirdCompatible[RequestData] {
+        override def method(t: RequestData) = t.method
+        override def path(t: RequestData) = t.uriPath
+        override def queryParam(t: RequestData, s: String) = t.queryString.get(s)
+      }
+  }
 
   /**
    * The query string type

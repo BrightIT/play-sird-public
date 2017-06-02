@@ -7,8 +7,8 @@ package com.brightit.sird
  * An extractor that extracts requests by method.
  */
 class RequestMethodExtractor private[sird] (method: String) {
-  def unapply(request: RequestData): Option[RequestData] =
-    Some(request).filter(_.method.equalsIgnoreCase(method))
+  def unapply[T](t: T)(implicit sc: IsSirdMethodCompatible[T]): Option[T] =
+    Some(t).filter(sc.method(_).equalsIgnoreCase(method))
 }
 
 /**
