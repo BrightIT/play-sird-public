@@ -5,8 +5,6 @@ package com.brightit.sird
 
 import java.net.{ URI, URL }
 
-import play.api.mvc.RequestHeader
-
 class RequiredQueryStringParameter(paramName: String) extends QueryStringParameterExtractor[String] {
   def unapply(qs: QueryString): Option[String] = qs.get(paramName).flatMap(_.headOption)
 }
@@ -22,7 +20,7 @@ class SeqQueryStringParameter(paramName: String) extends QueryStringParameterExt
 trait QueryStringParameterExtractor[T] {
   import QueryStringParameterExtractor._
   def unapply(qs: QueryString): Option[T]
-  def unapply(req: RequestHeader): Option[T] = unapply(req.queryString)
+  def unapply(req: RequestData): Option[T] = unapply(req.queryString)
   def unapply(uri: URI): Option[T] = unapply(parse(uri.getRawQuery))
   def unapply(uri: URL): Option[T] = unapply(parse(uri.getQuery))
 }

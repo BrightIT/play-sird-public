@@ -7,6 +7,15 @@ import scala.language.experimental.macros
 /**
  * The Play "String Interpolating Routing DSL", sird for short.
  *
+ * == Bright-IT addition ==
+ * The documentation below is the original Play documentation. It's left here to make integrating the library back into
+ * Play easier, but it references classes which don't really apply for us, like `play.api.routing.Router`.
+ *
+ * Original Play SIRD is based on RequestHeader, but that class is tightly integrated with Play, so instead this routing
+ * matches on [[com.brightit.sird.RequestData]].
+ *
+ * == Original Play documentation ==
+ *
  * This provides:
  * - Extractors for requests that extract requests by method, eg GET, POST etc.
  * - A string interpolating path extractor
@@ -43,7 +52,7 @@ import scala.language.experimental.macros
  *  }
  * }}}
  */
-package object sird extends RequestMethodExtractors with PathBindableExtractors {
+package object sird extends RequestMethodExtractors with StringExtractors {
 
   implicit class UrlContext(sc: StringContext) {
     /**
@@ -110,6 +119,11 @@ package object sird extends RequestMethodExtractors with PathBindableExtractors 
    * Same as &, but for convenience to make the dsl look nicer when extracting query strings
    */
   val ? = &
+
+  /**
+   * Holds data necessary for routing.
+   */
+  case class RequestData(method: String, uriPath: String, queryString: QueryString)
 
   /**
    * The query string type

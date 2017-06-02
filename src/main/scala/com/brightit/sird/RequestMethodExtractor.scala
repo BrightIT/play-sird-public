@@ -3,13 +3,11 @@
  */
 package com.brightit.sird
 
-import play.api.mvc.RequestHeader
-
 /**
  * An extractor that extracts requests by method.
  */
 class RequestMethodExtractor private[sird] (method: String) {
-  def unapply(request: RequestHeader): Option[RequestHeader] =
+  def unapply(request: RequestData): Option[RequestData] =
     Some(request).filter(_.method.equalsIgnoreCase(method))
 }
 

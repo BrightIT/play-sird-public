@@ -6,8 +6,7 @@ package com.brightit.sird
 import java.net.{ URL, URI }
 import java.util.regex.Pattern
 
-import play.api.mvc.RequestHeader
-import play.utils.UriEncoding
+import com.brightit.sird.utils.UriEncoding
 
 import scala.collection.concurrent.TrieMap
 import scala.util.matching.Regex
@@ -26,7 +25,7 @@ import scala.util.matching.Regex
  */
 class PathExtractor(regex: Regex, partDescriptors: Seq[PathPart.Value]) {
   def unapplySeq(path: String): Option[List[String]] = extract(path)
-  def unapplySeq(request: RequestHeader): Option[List[String]] = extract(request.path)
+  def unapplySeq(request: RequestData): Option[List[String]] = extract(request.uriPath)
   def unapplySeq(url: URL): Option[List[String]] = Option(url.getPath).flatMap(extract)
   def unapplySeq(uri: URI): Option[List[String]] = Option(uri.getRawPath).flatMap(extract)
 

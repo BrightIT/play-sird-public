@@ -6,7 +6,7 @@ package com.brightit.sird
 import java.net.{ URL, URI }
 
 import org.specs2.mutable.Specification
-import play.core.test.FakeRequest
+import com.brightit.sird.util.FakeRequest.fakeRequest
 
 class UrlContextSpec extends Specification {
 
@@ -98,7 +98,7 @@ class UrlContextSpec extends Specification {
     }
 
     "match a request" in {
-      FakeRequest("GET", "/foo/testing/bar") must beLike {
+      fakeRequest("GET", "/foo/testing/bar") must beLike {
         case p"/foo/$id/bar" => id must_== "testing"
       }
     }

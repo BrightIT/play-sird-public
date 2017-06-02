@@ -3,20 +3,20 @@
  */
 package com.brightit.sird
 
-import play.api.mvc.PathBindable
+import scala.util.control.NonFatal
 
 /**
- * An extractor that extracts from a String using a [[play.api.mvc.PathBindable]].
+ * An extractor that extracts from a String.
+ *
+ * Originally this was `PathBindableExtractor`, but there's no need to base this specifically on Play's `PathBindable`.
  */
-class PathBindableExtractor[T](implicit pb: PathBindable[T]) {
+abstract class StringExtractor[T] {
   self =>
 
   /**
    * Extract s to T if it can be bound, otherwise don't match.
    */
-  def unapply(s: String): Option[T] = {
-    pb.bind("anon", s).right.toOption
-  }
+  def unapply(s: String): Option[T]
 
   /**
    * Extract Option[T] only if s is None, Some value that can be bound, otherwise don't match.
@@ -44,32 +44,43 @@ class PathBindableExtractor[T](implicit pb: PathBindable[T]) {
   }
 }
 
+object StringExtractor {
+  /**
+   * Create a [[StringExtractor]] based on a function which can throw.
+   */
+  def pseudoparser[T](f: String => T): StringExtractor[T] = new StringExtractor[T] {
+    override def unapply(s: String) = try { Some(f(s)) } catch { case NonFatal(_) => None }
+  }
+}
+
 /**
- * Extractors that bind types from paths using [[play.api.mvc.PathBindable]].
+ * Extractors that bind types from strings.
  */
-trait PathBindableExtractors {
+trait StringExtractors {
+  import StringExtractor._
+
   /**
    * An int extractor.
    */
-  val int = new PathBindableExtractor[Int]
+  val int = pseudoparser(_.toInt)
 
   /**
    * A long extractor.
    */
-  val long = new PathBindableExtractor[Long]
+  val long = pseudoparser(_.toLong)
 
   /**
    * A boolean extractor.
    */
-  val bool = new PathBindableExtractor[Boolean]
+  val bool = pseudoparser(_.toBoolean)
 
   /**
    * A float extractor.
    */
-  val float = new PathBindableExtractor[Float]
+  val float = pseudoparser(_.toFloat)
 
   /**
    * A double extractor.
    */
-  val double = new PathBindableExtractor[Double]
+  val double = pseudoparser(_.toDouble)
 }
