@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2009-2017 Lightbend Inc. <https://www.lightbend.com>
  */
-package play.api.routing.sird
+package com.brightit.sird
 
 import org.specs2.mutable.Specification
 import play.core.test.FakeRequest

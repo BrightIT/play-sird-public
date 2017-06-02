@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2009-2017 Lightbend Inc. <https://www.lightbend.com>
  */
-package play.utils
+package com.brightit.sird.utils
 
 import java.io.ByteArrayOutputStream
 import java.nio.charset.Charset

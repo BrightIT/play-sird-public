@@ -3,7 +3,7 @@
  */
 // This is in its own package so that the UrlContext.q interpolator in the sird package doesn't make the
 // Quasiquote.q interpolator ambiguous.
-package play.api.routing.sird.macroimpl
+package com.brightit.sird.macroimpl
 
 import scala.reflect.macros.blackbox.Context
 import scala.language.experimental.macros
@@ -61,7 +61,7 @@ private[sird] object QueryStringParameterMacros {
         // the parameter name to it
         val call = TermName(extractorName)
         c.Expr(
-          q"_root_.play.api.routing.sird.QueryStringParameterExtractor.$call($paramName)"
+          q"_root_.com.brightit.sird.QueryStringParameterExtractor.$call($paramName)"
         )
 
       case _ =>
