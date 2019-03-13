@@ -14,7 +14,7 @@ libraryDependencies ++= Seq(
 )
 
 publishTo := {
-  val nexus = "http://repo.bright-it.net/content/repositories/"
+  val nexus = "http://repo.bright.global/content/repositories/"
   if (isSnapshot.value)
     Some("snapshots" at nexus + "snapshots")
   else
